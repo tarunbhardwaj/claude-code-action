@@ -43,7 +43,7 @@ export async function setupBranch(
       // Handle open PR: Checkout the PR branch
       console.log("This is an open PR, checking out PR branch...");
 
-      const branchName = prData.headRefName;
+      const branchName = `PR-${entityNumber}`;
 
       // Determine optimal fetch depth based on PR commit count, with a minimum of 20
       const commitCount = prData.commits.totalCount;
@@ -54,7 +54,7 @@ export async function setupBranch(
       );
 
       // Execute git commands to checkout PR branch (dynamic depth based on PR size)
-      await $`git fetch origin --depth=${fetchDepth} ${branchName}`;
+      await $`git fetch origin --depth=${fetchDepth} pull/${entityNumber}/head:${branchName}`;
       await $`git checkout ${branchName}`;
 
       console.log(`Successfully checked out PR branch for PR #${entityNumber}`);
